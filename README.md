@@ -48,4 +48,16 @@ HTTP request header에 포함하여 request를 전송할 때마다
 JWT를 이용한 인증 및 자격 검증 기능이 완성.  
 
 
-JWT를 검증하는 전용 Security Filter(JwtVerificationFilter 클래스)를 구현.  
+JWT를 검증하는 전용 Security Filter(JwtVerificationFilter 클래스)를 구현.(패키지의 explain.md 보기)  
+  
+  
+
+핵심 포인트  
+JWT는 JWS(JSON Web Token Signed)라고도 불린다.  
+SecurityContext에 Authentication을 저장하게 되면  
+Spring Security의 세션 정책(Session Policy)에 따라서 세션을 생성할 수도 있고, 그렇지 않을 수도 있다.  
+SecurityContext에 클라이언트의 인증 정보(Authentication 객체)가  
+저장되지 않은 상태로 다음(next) Security Filter 로직을 수행하다 보면  
+결국에는 AuthenticationException 이 발생하게 되고,  
+이 AuthenticationException은 AuthenticationEntryPoint가 처리하게 된다.  
+AccessDeniedHandler는 인증에는 성공했지만 해당 리소스에 대한 권한이 없으면 호출되는 핸들러이다.  

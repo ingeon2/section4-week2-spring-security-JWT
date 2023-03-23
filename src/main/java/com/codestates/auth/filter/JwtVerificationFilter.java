@@ -3,6 +3,8 @@ package com.codestates.auth.filter;
 import com.codestates.auth.jwt.JwtTokenizer;
 import com.codestates.auth.utils.CustomAuthorityUtils;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,11 +38,25 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        Map<String, Object> claims = verifyJws(request);
-        //JWT를 검증하는데 사용되는 private 메서드
-
-        setAuthenticationToContext(claims);
-        //setAuthenticationToContext() 메서드는 Authentication 객체를 SecurityContext에 저장하기 위한 private 메서드
+        
+        //JWT 검증 과정에서 발생할 수 있는 Exception을 처리할 수 있는 예외 처리 로직을 JwtVerificationFilter에 추가(트라이 캐치)
+        
+        
+        try {
+            Map<String, Object> claims = verifyJws(request);
+            //JWT를 검증하는데 사용되는 private 메서드
+            setAuthenticationToContext(claims);
+            //setAuthenticationToContext() 메서드는 Authentication 객체를 SecurityContext에 저장하기 위한 private 메서드
+        }
+        catch (SignatureException se) {
+            request.setAttribute("exception", se);
+        }
+        catch (ExpiredJwtException ee) {
+            request.setAttribute("exception", ee);
+        }
+        catch (Exception e) {
+            request.setAttribute("exception", e);
+        }
 
         filterChain.doFilter(request, response);
         //문제없이 JWT의 서명 검증에 성공하고, Security Context에 Authentication을 저장한 뒤에는 
