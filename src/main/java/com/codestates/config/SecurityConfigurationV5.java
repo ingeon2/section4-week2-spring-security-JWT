@@ -27,7 +27,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 //우리가 여태까지 구현해 본 커피 주문 샘플 애플리케이션의 리소스 중에서 MemberController를 통해 접근할 수 있는 리소스에 대한 접근 권한을 부여
 // MemberController를 통해 접근할 수 있는 리소스에 대해 접근 권한을 부여한 SecurityConfiguration 코드 추가.
-@Configuration
+//@Configuration
 public class SecurityConfigurationV5 {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils; // 추가
@@ -37,7 +37,7 @@ public class SecurityConfigurationV5 {
         this.authorityUtils = authorityUtils;
     }
 
-    @Bean
+    //@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .headers().frameOptions().sameOrigin()
@@ -65,7 +65,7 @@ public class SecurityConfigurationV5 {
 
 
     //PasswordEncoder Bean 객체를 생성
-    @Bean
+    //@Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
@@ -73,7 +73,7 @@ public class SecurityConfigurationV5 {
 
 
     //CorsConfigurationSource Bean 생성을 통해 구체적인 CORS 정책을 설정
-    @Bean
+    //@Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
