@@ -12,8 +12,17 @@ import javax.validation.constraints.Pattern;
 
 public class MemberDto {
     @Getter
-    @AllArgsConstructor // TODO 테스트를 위해 추가됨
+    @AllArgsConstructor // 테스트에서 사용하려고 추가해줌
     public static class Post {
+
+        //Spring Security가 적용되지 않았던 여러분들의 커피 주문 샘플 애플리케이션에는 
+        //회원 등록 시, 회원의 인증과 관련된 정보(패스워드, 사용자 권한)가 필요없었지만 
+        //여기선 회원의 패스워드 정보를 전달받기 위해 필요
+        @NotBlank
+        private String password;
+
+
+
         @NotBlank
         @Email
         private String email;

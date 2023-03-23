@@ -16,6 +16,16 @@ import java.util.List;
 @Setter
 @Entity
 public class Member extends Auditable {
+    
+    //패스워드 추가 (시큐리티 사용으로 인해)
+    @Column(length = 100, nullable = false)
+    private String password;
+
+    // ROLE 추가 (시큐리티 사용에서 권한)
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
